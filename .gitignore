@@ -1,0 +1,7 @@
+*.pdf
+*.docx
+~$*
+bin/
+obj/
+dist/*
+release-assets/

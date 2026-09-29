@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>Docx2Pdf</AssemblyName>
+    <RootNamespace>Docx2PdfGui</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Version>1.0.0</Version>
+    <AssemblyTitle>DOCX to PDF</AssemblyTitle>
+    <Product>DOCX to PDF</Product>
+    <Authors>ncdai/docx2pdf-win contributors</Authors>
+    <Description>Batch convert DOCX documents to PDF using Microsoft Word.</Description>
+  </PropertyGroup>
+</Project>
