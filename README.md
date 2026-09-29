@@ -85,6 +85,10 @@ The package is written to `release-assets\Docx2Pdf-win-x64.zip` with a `.sha256`
 Get-FileHash .\Docx2Pdf-win-x64.zip -Algorithm SHA256
 ```
 
+### Automated GitHub releases
+
+This repository includes a GitHub Actions workflow for Windows release builds. To publish a future version, push a semantic-version tag such as `v1.0.1`. The workflow builds the tagged source, packages the executable and documentation, and creates or updates that GitHub release with the ZIP and checksum assets. Standard GitHub-hosted runner use is free for public repositories; see [GitHub Actions billing](https://docs.github.com/billing/managing-billing-for-github-actions/about-billing-for-github-actions).
+
 ## Original command-line converter
 
 This repository also retains the upstream PowerShell batch tool for scripted use:

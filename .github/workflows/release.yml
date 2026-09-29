@@ -1,0 +1,54 @@
+name: Build and publish Windows release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build Windows x64 release
+    runs-on: windows-latest
+    steps:
+      - name: Check out tagged source
+        uses: actions/checkout@v4
+
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Validate release tag
+        shell: pwsh
+        run: |
+          if ($env:GITHUB_REF_NAME -notmatch '^v(?<version>\d+\.\d+\.\d+)$') {
+            throw "Expected a semantic version tag such as v1.2.3; got $env:GITHUB_REF_NAME"
+          }
+          "VERSION=$($Matches.version)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      - name: Build and package
+        shell: pwsh
+        run: .\package-release.ps1 -Version $env:VERSION
+
+      - name: Create or update GitHub release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = $env:GITHUB_REF_NAME
+          $assets = @(
+            'release-assets/Docx2Pdf-win-x64.zip',
+            'release-assets/Docx2Pdf-win-x64.zip.sha256'
+          )
+          gh release view $tag --json tagName *> $null
+          if ($LASTEXITCODE -eq 0) {
+            gh release upload $tag @assets --clobber
+          } else {
+            gh release create $tag @assets --title "DOCX to PDF $tag" --generate-notes
+          }
+          if ($LASTEXITCODE -ne 0) {
+            throw "Could not publish release $tag"
+          }
